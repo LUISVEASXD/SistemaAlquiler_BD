@@ -87,4 +87,31 @@ create table mantenimiento
     costo decimal(10,2) not null,
     responsable varchar(120) not null,
     constraint fk_mantenimiento_vehiculo foreign key(id_vehiculo) references vehiculo(id_vehiculo)
-);
+)
+go
+insert into cliente
+    (id_cliente,nombres,apellidos, correo, direccion, tipo, celular)
+values
+    (1, 'Luis Isaac', 'Veas Vera', 'isaacveasvera@gmail.com', 'Tia 25 y la ch', 'natural', '0984618951'),
+    (2, 'Bettsy', 'Paredes Vargas', 'bettsyparedez@gmail.com', 'Sergio toral', 'Empresa', '0990384845'),
+    (3, 'Valeska Rosmeri', 'Veas Vera', 'valeskaveasvera@gmail.com', 'Tia 25 y la ch', 'natural', '0999999999');
+insert into categoriaVehiculo
+    (id_categoria, nombre_tipo, tarifa_hora,tarifa_dia)
+values
+    (1, 'liviano', 5.00, 45.00),
+    (2, 'transporte', 10.00, 80.00),
+    (3, 'carga', 15.00, 125.00),
+    (4, 'Maquinaria pesada', 20.00, 140.00);
+insert into empleado
+    (id_empleado, nombres,apellidos, correo, cargo,celular)
+values
+    (1, 'Dylan', 'Leon Choez', 'dylan@gmail.com', 'agente de ventas', '091234568'),
+    (2, 'Ronny', 'Zajia', 'zajia@gmail.com', 'agente de ventas', '098888882');
+insert into vehiculo
+    (id_vehiculo, id_categoria, placa, marca, modelo, estado)
+values
+    (1, 1, 'LIV-8680', 'BMW', 'BMW Z4', 'disponible'),
+    (2, 1, 'LYN-0000', 'MERCEDEZ', 'AMG-A35', 'No disponible'),
+    (3, 1, 'NYL-1111', 'KIA', 'RIO', 'disponbile'),
+    (4, 2, 'LVV-1417', 'chevrolet', 'FTR 1624', 'disponible'),
+    (6, 4, 'CAT-8680', 'Caterpillar', '320 GC', 'disponible');
