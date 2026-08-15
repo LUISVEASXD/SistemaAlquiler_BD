@@ -119,15 +119,15 @@ values
 insert into contrato
     (id_contrato, id_empleado, fecha_inicio,fecha_fin,estado)
 values
-    (1, 1, 1, '2026-08-01', '2026-08-05', 'finalizado'),
-    (2, 2, 2, '2026-08-10', '2026-08-15', 'activo')
+    (1, 1, '2026-08-01', '2026-08-05', 'finalizado'),
+    (2, 2, '2026-08-10', '2026-08-15', 'activo')
 insert into detalle_Contrato
     (id_detalle,id_contrato,id_vehiculo, dias_prestado, monto_prorrateado)
 values
     (1, 1, 1, 4, 180.00),
     (2, 2, 4, 5, 400.00);
 insert into mantenimiento
-    (id_mantenimient, id_vehiculo, fecha_inicio, fecha_fin, descripcion, costo, responsable)
+    (id_mantenimiento, id_vehiculo, fecha_inicio, fecha_fin, descripcion, costo, responsable)
 values
     (1, 2, '2026-08-12', '2026-08-15', 'cambio de aceite y frenos', 150.00, 'Taller Auto S.A');
 insert into reserva
@@ -140,3 +140,70 @@ insert into pagos
 values
     (1, 1, NULL, 180.00, 'Tarjeta de Crédito', '2026-08-01'),
     (2, NULL, 1, 200.00, 'Transferencia', '2026-08-11');
+go
+
+create view vw_Vehiculos_Disponible
+as
+    select
+        v.placa,
+        v.marca,
+        v.modelo,
+        c.nombre_tipo as categoria,
+        c.tarifa_dia,
+        c.tarifa_hora
+    from vehiculo v
+        join categoriaVehiculo c on v.id_categoria = c.id_categoria
+    where v.estado = 'disponible';
+go
+
+create view vw_Contratos_Activos
+as
+    select
+        co.fecha_inicio,
+        co.fecha_fin,
+        cl.nombres as cliente,
+        em.nombres as empleado
+    from contrato co
+        join cliente cl on co.id_cliente = cl.id_cliente
+        join empleado em on co.id_empleado = em.id_empleado
+    where co.estado = 'activo';
+go
+
+create view vw_Historial_Mantenimiento
+as
+    select
+        man.fecha_inicio,
+        man.fecha_fin,
+        man.descripcion,
+        man.costo,
+        man.responsable,
+        ve.placa,
+        ve.marca,
+        ve.modelo,
+        cav.nombre_tipo
+    from mantenimiento man
+        join vehiculo ve on man.id_vehiculo = ve.id_vehiculo
+        join categoriaVehiculo cav on ve.id_categoria = cav.id_categoria;
+go
+
+create view vw_Resumen_Pagos
+as
+    select
+        p.monto,
+        p.metodo_pago,
+        p.fecha_pago,
+        cl.nombres as cliente,
+        cl.tipo,
+        cl.correo,
+        co.fecha_inicio,
+        co.fecha_fin,
+        co.estado,
+        em.nombres as empleado,
+        dco.monto_prorrateado
+
+    from pagos p
+        join contrato co on p.id_contrato = co.id_contrato
+        join cliente cl on co.id_cliente = cl.id_cliente
+        join empleado em on co.id_empleado = em.id_empleado
+        join detalle_contrato dco on co.id_contrato = dco.id_contrato
+go
