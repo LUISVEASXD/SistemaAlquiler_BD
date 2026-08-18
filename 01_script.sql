@@ -115,6 +115,16 @@ CREATE TABLE mantenimiento
     responsable VARCHAR(120) NOT NULL,
     CONSTRAINT fk_mantenimiento_vehiculo FOREIGN KEY (id_vehiculo) REFERENCES vehiculo(id_vehiculo)
 );
+
+create table detalle_mantenimiento
+(
+    id_detalle_mantenimiento int primary key,
+    id_mantenimiento int,
+    id_vehiculo int,
+    costo_reparacion decimal(10,2),
+    constraint fk_dm_mantenimiento foreign key (id_mantenimiento) references mantenimiento(id_mantenimiento),
+    constraint fk_dm_vehiculo foreign key (id_vehiculo) references vehiculo(id_vehiculo)
+);
 GO
 
 INSERT INTO cliente
